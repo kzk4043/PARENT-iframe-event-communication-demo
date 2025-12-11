@@ -22,60 +22,6 @@
 
     <div id="iframe-status">Waiting for iframe to load...</div>
     <div id="iframe-timing"></div>
-
-    <script>
-        const parentStartTime = performance.now();
-        const parentStatusDiv = document.getElementById('parent-status');
-        const parentTimingDiv = document.getElementById('parent-timing');
-        const iframeStatusDiv = document.getElementById('iframe-status');
-        const iframeTimingDiv = document.getElementById('iframe-timing');
-        const iframe = document.getElementById('child-iframe');
-
-        console.log('[PARENT] Performance test started');
-        console.log(`[PARENT] Parent page start time: ${parentStartTime.toFixed(2)}ms`);
-
-        // Track parent page load time using DOMContentLoaded (not window.load)
-        // window.load waits for all resources including iframes, which would block
-        // DOMContentLoaded fires when DOM is ready, before iframe loads
-        document.addEventListener('DOMContentLoaded', function () {
-            const domReadyTime = performance.now() - parentStartTime;
-            const timingDomReady = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
-
-            parentStatusDiv.textContent = 'Parent page DOM ready (iframe not included)';
-            parentTimingDiv.innerHTML = `
-                <p><strong>Parent DOM Ready Time:</strong> ${timingDomReady.toFixed(2)}ms</p>
-                <p><strong>Parent Script Execution Time:</strong> ${domReadyTime.toFixed(2)}ms</p>
-                <p><em>Note: Parent page metrics exclude iframe load time</em></p>
-            `;
-
-            console.log(`[PARENT] Parent DOM ready time: ${timingDomReady.toFixed(2)}ms`);
-            console.log(`[PARENT] Parent script execution time: ${domReadyTime.toFixed(2)}ms`);
-            console.log(`[PARENT] Parent page ready (iframe loading separately)`);
-        });
-
-        // Track iframe load time (console only - do not modify DOM after child loads)
-        const iframeLoadStartTime = performance.now();
-
-        iframe.addEventListener('load', function () {
-            const iframeLoadTime = performance.now() - iframeLoadStartTime;
-            const totalTime = performance.now() - parentStartTime;
-
-            // Log to console only - do not modify parent page DOM
-            // This ensures parent page performance is not affected by iframe load
-            console.log(`[PARENT] Iframe load time: ${iframeLoadTime.toFixed(2)}ms`);
-            console.log(`[PARENT] Total time (parent + iframe): ${totalTime.toFixed(2)}ms`);
-            console.log(`[PARENT] Performance test completed`);
-        });
-
-        iframe.addEventListener('error', function () {
-            // Log to console only - do not modify parent page DOM
-            console.error('[PARENT] Iframe failed to load');
-        });
-
-        // Log initial parent page metrics
-        const domReadyTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
-        console.log(`[PARENT] Initial DOM ready time: ${domReadyTime.toFixed(2)}ms`);
-    </script>
 </body>
 
 </html>
