@@ -52,26 +52,22 @@
             console.log(`[PARENT] Parent full load time: ${fullLoadTime.toFixed(2)}ms`);
         });
 
-        // Track iframe load time
+        // Track iframe load time (console only - do not modify DOM after child loads)
         const iframeLoadStartTime = performance.now();
 
         iframe.addEventListener('load', function () {
             const iframeLoadTime = performance.now() - iframeLoadStartTime;
             const totalTime = performance.now() - parentStartTime;
 
-            iframeStatusDiv.textContent = 'Child iframe loaded';
-            iframeTimingDiv.innerHTML = `
-                <p><strong>Iframe Load Time:</strong> ${iframeLoadTime.toFixed(2)}ms</p>
-                <p><strong>Total Time (Parent + Iframe):</strong> ${totalTime.toFixed(2)}ms</p>
-            `;
-
+            // Log to console only - do not modify parent page DOM
+            // This ensures parent page performance is not affected by iframe load
             console.log(`[PARENT] Iframe load time: ${iframeLoadTime.toFixed(2)}ms`);
             console.log(`[PARENT] Total time (parent + iframe): ${totalTime.toFixed(2)}ms`);
             console.log(`[PARENT] Performance test completed`);
         });
 
         iframe.addEventListener('error', function () {
-            iframeStatusDiv.textContent = 'Error loading iframe';
+            // Log to console only - do not modify parent page DOM
             console.error('[PARENT] Iframe failed to load');
         });
 
