@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Site - Iframe Height Adjustment Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Parent Site</h1>
+            <p class="subtitle">Iframe Height Adjustment Demo</p>
+        </header>
+
+        <main>
+            <section class="info-section">
+                <h2>Test Instructions</h2>
+                <ol>
+                    <li>Click on elements inside the iframe (child site) below</li>
+                    <li>Observe if the iframe height automatically adjusts to fit the child content</li>
+                    <li>Check if scrolling appears or content is clipped</li>
+                </ol>
+            </section>
+
+            <section class="iframe-section">
+                <h2>Child Site (in iframe)</h2>
+                <div class="iframe-wrapper">
+                    <iframe 
+                        id="child-iframe"
+                        src="https://kzk4043.github.io/CHILD-iframe-event-communication-demo/"
+                        title="Child Site"
+                        frameborder="0"
+                        scrolling="no">
+                    </iframe>
+                </div>
+                <div class="iframe-info">
+                    <p><strong>Current iframe dimensions:</strong></p>
+                    <p id="iframe-dimensions">Width: <span id="iframe-width">-</span>px, Height: <span id="iframe-height">-</span>px</p>
+                </div>
+            </section>
+
+            <section class="observation-section">
+                <h2>Observations</h2>
+                <ul>
+                    <li>Initial iframe height: <span id="initial-height">-</span>px</li>
+                    <li>Does iframe auto-adjust height? <span id="auto-adjust">Observing...</span></li>
+                    <li>Scrollbar visible? <span id="scrollbar-status">Checking...</span></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>Parent Site - Iframe Height Adjustment Demo</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
