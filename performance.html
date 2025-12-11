@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Performance Test</title>
+</head>
+
+<body>
+    <h1>Parent Performance Test Page</h1>
+    <p>This page contains a child page in an iframe that will block for 5 seconds.</p>
+    <p>We want to test if the parent page is also considered slow when the child iframe is slow.</p>
+
+    <div id="parent-status">Parent page loaded</div>
+    <div id="parent-timing"></div>
+
+    <h2>Child Page (in iframe)</h2>
+    <iframe id="child-iframe" src="https://kzk4043.github.io/CHILD-iframe-event-communication-demo/performance.html"
+        title="Child Performance Test" frameborder="1" width="100%" height="400">
+    </iframe>
+
+    <div id="iframe-status">Waiting for iframe to load...</div>
+    <div id="iframe-timing"></div>
+
+    <script>
+        const parentStartTime = performance.now();
+        const parentStatusDiv = document.getElementById('parent-status');
+        const parentTimingDiv = document.getElementById('parent-timing');
+        const iframeStatusDiv = document.getElementById('iframe-status');
+        const iframeTimingDiv = document.getElementById('iframe-timing');
+        const iframe = document.getElementById('child-iframe');
+
+        console.log('[PARENT] Performance test started');
+        console.log(`[PARENT] Parent page start time: ${parentStartTime.toFixed(2)}ms`);
+
+        // Track parent page load time
+        window.addEventListener('load', function () {
+            const parentLoadTime = performance.now() - parentStartTime;
+            const domReadyTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
+            const fullLoadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+
+            parentStatusDiv.textContent = 'Parent page fully loaded';
+            parentTimingDiv.innerHTML = `
+                <p><strong>Parent DOM Ready Time:</strong> ${domReadyTime.toFixed(2)}ms</p>
+                <p><strong>Parent Full Load Time:</strong> ${fullLoadTime.toFixed(2)}ms</p>
+                <p><strong>Parent Script Execution Time:</strong> ${parentLoadTime.toFixed(2)}ms</p>
+            `;
+
+            console.log(`[PARENT] Parent page load time: ${parentLoadTime.toFixed(2)}ms`);
+            console.log(`[PARENT] Parent DOM ready time: ${domReadyTime.toFixed(2)}ms`);
+            console.log(`[PARENT] Parent full load time: ${fullLoadTime.toFixed(2)}ms`);
+        });
+
+        // Track iframe load time
+        const iframeLoadStartTime = performance.now();
+
+        iframe.addEventListener('load', function () {
+            const iframeLoadTime = performance.now() - iframeLoadStartTime;
+            const totalTime = performance.now() - parentStartTime;
+
+            iframeStatusDiv.textContent = 'Child iframe loaded';
+            iframeTimingDiv.innerHTML = `
+                <p><strong>Iframe Load Time:</strong> ${iframeLoadTime.toFixed(2)}ms</p>
+                <p><strong>Total Time (Parent + Iframe):</strong> ${totalTime.toFixed(2)}ms</p>
+            `;
+
+            console.log(`[PARENT] Iframe load time: ${iframeLoadTime.toFixed(2)}ms`);
+            console.log(`[PARENT] Total time (parent + iframe): ${totalTime.toFixed(2)}ms`);
+            console.log(`[PARENT] Performance test completed`);
+        });
+
+        iframe.addEventListener('error', function () {
+            iframeStatusDiv.textContent = 'Error loading iframe';
+            console.error('[PARENT] Iframe failed to load');
+        });
+
+        // Log initial parent page metrics
+        const domReadyTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
+        console.log(`[PARENT] Initial DOM ready time: ${domReadyTime.toFixed(2)}ms`);
+    </script>
+</body>
+
+</html>
