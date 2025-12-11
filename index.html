@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Site - Iframe Height Adjustment Demo</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -26,17 +28,14 @@
             <section class="iframe-section">
                 <h2>Child Site (in iframe)</h2>
                 <div class="iframe-wrapper">
-                    <iframe 
-                        id="child-iframe"
-                        src="https://kzk4043.github.io/CHILD-iframe-event-communication-demo/"
-                        title="Child Site"
-                        frameborder="0"
-                        scrolling="no">
+                    <iframe id="child-iframe" src="https://kzk4043.github.io/CHILD-iframe-event-communication-demo/"
+                        title="Child Site" frameborder="0" scrolling="auto">
                     </iframe>
                 </div>
                 <div class="iframe-info">
                     <p><strong>Current iframe dimensions:</strong></p>
-                    <p id="iframe-dimensions">Width: <span id="iframe-width">-</span>px, Height: <span id="iframe-height">-</span>px</p>
+                    <p id="iframe-dimensions">Width: <span id="iframe-width">-</span>px, Height: <span
+                            id="iframe-height">-</span>px</p>
                 </div>
             </section>
 
@@ -57,5 +56,5 @@
 
     <script src="script.js"></script>
 </body>
-</html>
 
+</html>
