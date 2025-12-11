@@ -34,22 +34,23 @@
         console.log('[PARENT] Performance test started');
         console.log(`[PARENT] Parent page start time: ${parentStartTime.toFixed(2)}ms`);
 
-        // Track parent page load time
-        window.addEventListener('load', function () {
-            const parentLoadTime = performance.now() - parentStartTime;
-            const domReadyTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
-            const fullLoadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+        // Track parent page load time using DOMContentLoaded (not window.load)
+        // window.load waits for all resources including iframes, which would block
+        // DOMContentLoaded fires when DOM is ready, before iframe loads
+        document.addEventListener('DOMContentLoaded', function () {
+            const domReadyTime = performance.now() - parentStartTime;
+            const timingDomReady = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
 
-            parentStatusDiv.textContent = 'Parent page fully loaded';
+            parentStatusDiv.textContent = 'Parent page DOM ready (iframe not included)';
             parentTimingDiv.innerHTML = `
-                <p><strong>Parent DOM Ready Time:</strong> ${domReadyTime.toFixed(2)}ms</p>
-                <p><strong>Parent Full Load Time:</strong> ${fullLoadTime.toFixed(2)}ms</p>
-                <p><strong>Parent Script Execution Time:</strong> ${parentLoadTime.toFixed(2)}ms</p>
+                <p><strong>Parent DOM Ready Time:</strong> ${timingDomReady.toFixed(2)}ms</p>
+                <p><strong>Parent Script Execution Time:</strong> ${domReadyTime.toFixed(2)}ms</p>
+                <p><em>Note: Parent page metrics exclude iframe load time</em></p>
             `;
 
-            console.log(`[PARENT] Parent page load time: ${parentLoadTime.toFixed(2)}ms`);
-            console.log(`[PARENT] Parent DOM ready time: ${domReadyTime.toFixed(2)}ms`);
-            console.log(`[PARENT] Parent full load time: ${fullLoadTime.toFixed(2)}ms`);
+            console.log(`[PARENT] Parent DOM ready time: ${timingDomReady.toFixed(2)}ms`);
+            console.log(`[PARENT] Parent script execution time: ${domReadyTime.toFixed(2)}ms`);
+            console.log(`[PARENT] Parent page ready (iframe loading separately)`);
         });
 
         // Track iframe load time (console only - do not modify DOM after child loads)
